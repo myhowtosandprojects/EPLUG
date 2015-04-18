@@ -150,8 +150,8 @@ void loop()
   
   if(cmd_recv==1)
   { 
-    cmd_recv=0;                                            //Reset flag - received command 
-  
+    cmd_recv=0;                                              //Reset flag - received command 
+
    /******************************************************************************
     * PATTERN MATCHING - ACL LIKE STYLE
     ******************************************************************************
@@ -215,11 +215,17 @@ int rcv_cmd(char* cmd, int cmd_len)
                size = client.read(msg,size);               //Read the chars on buffer
                msg[size]='\0';                             //Add a string terminator  
                
-               // Serial.println(msg);                     //Return what is received
                rcv_chs=rcv_chs+size;                       //Count the received char to avoid exceding the "cmd" buffer length
                 
                if(rcv_chs<cmd_len)                         //If received chars don't exceed the "cmd" buffer
                {
+                 
+                 //for(int i=0;i<size;i++)
+                 //{
+                 //  client.println((int)msg[i]);
+                 //  client.println(msg[i]);
+                 //}
+                 
                  sprintf(cmd, "%s%s",cmd,msg);             //Concatenate cmd+msg
                  free(msg);                                //Release buffer
                 
@@ -269,9 +275,9 @@ int cmd_startswith_l(char* pattern, char* command)
     return 1;                                              //All char equals (pattern len) => return TRUE
   
   }
-  else return 0;	                                       //"Pattern" is not smaller then the "command"
+  else return 0;	                                   //"Pattern" is not smaller then the "command"
                                                            // so its impossible for the begin of the command
-														   // to be equal to the pattern => return false
+                                                           // to be equal to the pattern => return false
 
 }
 
@@ -281,7 +287,7 @@ int cmd_startswith_l(char* pattern, char* command)
 //////////////////////////////////////////////////////////////////////////
 int cmd_equals(char* pattern, char* command) 
 {
-  int pattern_len=strlen(pattern);						   //Get pattern number of chars
+  int pattern_len=strlen(pattern);                         //Get pattern number of chars
   int cmd_len=strlen(command);                             //Get command number of chars
   
   if(pattern_len==cmd_len)                                 //Is "pattern" the same size as the "command" ?
@@ -300,9 +306,9 @@ int cmd_equals(char* pattern, char* command)
     return 1; //equal length + all char equals 
   
   }
-  else return 0;	                                       //"Pattern" is not the same size as the "command"
+  else return 0;                                           //"Pattern" is not the same size as the "command"
                                                            // so its impossible for the command
-														   // to be equal to the pattern => return FALSE
+                                                           // to be equal to the pattern => return FALSE
 
 }
 
@@ -327,11 +333,11 @@ int set_on_relay_x(char* command)
    {
       if(relay_state[PIN] == 0)                            // Was relay OFF ? => ON
       {  
-	    //SET RELAY ON
+	//SET RELAY ON
         digitalWrite(PIN, LOW);                            // Activate Relay
         relay_state[PIN]=1;                                // Update Pin Status to ON
       
-	    //PRINT: RELAY ON
+	//PRINT: RELAY ON
         client.print("RELAY on Pin ");                     // Print: Relay x ON
         client.print(PIN);
         client.println(" - ON\n");  
@@ -339,7 +345,7 @@ int set_on_relay_x(char* command)
       }
       else if(relay_state[PIN] == 1)                       // Was relay already ON ?
       {
-	    //PRINT: RELAY ALREADY ON
+	//PRINT: RELAY ALREADY ON
         client.print("RELAY on Pin ");                     // Print: Relay x already ON
         client.print(PIN);
         client.println(" - ALREADY ON\n");  
@@ -347,7 +353,7 @@ int set_on_relay_x(char* command)
       }
       else  if(relay_state[PIN] >= 2)                      // No relay configured ?                                    
       {
-	    //PRINT: NO RELAY
+	//PRINT: NO RELAY
         client.print("RELAY on Pin ");                     // Print: Relay x NO RELAY
         client.print(PIN);
         client.println(" - NO RELAY\n"); 
@@ -375,11 +381,11 @@ int set_off_relay_x(char* command)
       
        if(relay_state[PIN] == 1)                           // Was relay ON ? => OFF
        {
-	     //SET RELAY OFF
+	 //SET RELAY OFF
          digitalWrite(PIN, HIGH);                          // Deactivate Relay
          relay_state[PIN]=0;                               // Update Pin Status to OFF
       
-	     //PRINT: RELAY OFF	  
+	 //PRINT: RELAY OFF	  
          client.print("RELAY on Pin ");                    // Print: Relay x OFF
          client.print(PIN);
          client.println(" - OFF\n");  
@@ -388,7 +394,7 @@ int set_off_relay_x(char* command)
        }
        else if(relay_state[PIN] == 0)                      // Was relay already OFF ?
        {
-	     //PRINT: RELAY ALREADY OFF
+	 //PRINT: RELAY ALREADY OFF
          client.print("RELAY on Pin ");                    // Print: Relay x ALREADY OFF
          client.print(PIN);
          client.println(" - ALREADY OFF\n");  
@@ -396,7 +402,7 @@ int set_off_relay_x(char* command)
        }
        else if(relay_state[PIN] >= 2)                      // No relay configured ?  
        {
-	     //PRINT: NO RELAY
+	 //PRINT: NO RELAY
          client.print("RELAY on Pin ");                    // Print: Relay x NO RELAY
          client.print(PIN);
          client.println(" - NO RELAY\n");  
@@ -520,7 +526,7 @@ int get_pin(char* command)
       //CHECK FOR 0 MANUALY BECAUSE ATOI RETURNS 0 ON FAILURE
       if( pin_str[0]=='0' && pin_str_len==2)               // Pin number is 0 AND str_len=2 aka - '0'\0
       {
- 	  return 0;                                            // Number is 0 => return 0
+ 	  return 0;                                        // Number is 0 => return 0
  	 }
       else                                                 // Other characters 
       {
@@ -590,8 +596,6 @@ int about()
  return 1;
 }
 
-  
- 
  
  
  
